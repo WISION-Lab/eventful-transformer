@@ -1,0 +1,4 @@
+_defaults:
+  - "_size_1024.yml"
+  - "_cpu.yml"
+vanilla: true

@@ -1,0 +1,13 @@
+_defaults:
+  - "configs/models/vivit_b_kinetics400.yml"
+
+# The full training dataset is huge (>200k videos) - using max_tars=40 limits
+# the size to about 40k videos.
+max_tars: 40
+model:
+  spatial_config:
+    block_class: "EventfulBlock"
+    block_config:
+      matmul_2_cast: "float16"
+  spatial_only: true
+weights: "weights/vivit_b_kinetics400.pth"

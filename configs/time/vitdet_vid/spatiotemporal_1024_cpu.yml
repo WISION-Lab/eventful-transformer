@@ -1,0 +1,6 @@
+_defaults:
+  - "_size_1024.yml"
+  - "_cpu.yml"
+  - "_spatial.yml"
+  - "_temporal.yml"
+token_top_k: [512]

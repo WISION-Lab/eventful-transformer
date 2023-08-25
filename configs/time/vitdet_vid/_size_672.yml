@@ -1,0 +1,5 @@
+_defaults:
+  - "_base.yml"
+input_size: 672
+model:
+  input_shape: [3, 672, 672]

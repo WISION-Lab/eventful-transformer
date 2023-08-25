@@ -1,0 +1,4 @@
+model:
+  spatial_config:
+    block_config:
+      ats_fraction: 0.9

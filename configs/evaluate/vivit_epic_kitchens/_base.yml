@@ -1,0 +1,5 @@
+_defaults:
+  - "configs/models/vivit_b_epic_kitchens.yml"
+_output: "results/evaluate/vivit_epic_kitchens/${_name}/"
+split: "validation"
+vanilla: false

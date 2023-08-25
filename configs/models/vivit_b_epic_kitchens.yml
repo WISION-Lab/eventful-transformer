@@ -1,0 +1,8 @@
+_defaults:
+  - "vivit_b_kinetics400.yml"
+model:
+  classes: 97  # Verb classes only
+  input_shape: [32, 3, 320, 320]
+  temporal_stride: 1  # The original model uses stride 2 at 60 fps, but our data is 30fps.
+  spatial_config:
+    position_encoding_size: [20, 20]

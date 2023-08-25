@@ -1,0 +1,5 @@
+model:
+  spatial_config:
+    block_class: "EventfulBlock"
+    block_config:
+      matmul_2_cast: "float16"

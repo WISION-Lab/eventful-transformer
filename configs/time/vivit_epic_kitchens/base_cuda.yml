@@ -1,0 +1,4 @@
+_defaults:
+  - "_base.yml"
+  - "_cuda.yml"
+vanilla: true

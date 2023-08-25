@@ -1,0 +1,6 @@
+_defaults:
+  - "_size_672.yml"
+  - "_cuda.yml"
+  - "_spatial.yml"
+  - "_temporal.yml"
+token_top_k: [256]

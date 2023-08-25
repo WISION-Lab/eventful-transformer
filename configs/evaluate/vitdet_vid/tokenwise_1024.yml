@@ -1,0 +1,4 @@
+_defaults:
+  - "_size_1024.yml"
+  - "_tokenwise.yml"
+token_top_k: [256, 512, 768, 1024, 1536, 2048]

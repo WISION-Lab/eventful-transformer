@@ -1,0 +1,7 @@
+device: "cpu"
+model:
+  spatial_config:
+    block_config:
+      matmul_2_cast: "bfloat16"
+n_items: 5
+threads: 8

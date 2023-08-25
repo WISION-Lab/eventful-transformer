@@ -1,0 +1,8 @@
+_defaults:
+  - "_size_1024.yml"
+model:
+  backbone_config:
+    block_class: "EventfulTokenwiseBlock"
+    block_config:
+      gate_before_ln: true
+token_top_k: [512, 1024, 2048]

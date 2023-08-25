@@ -1,0 +1,4 @@
+model:
+  backbone_config:
+    block_class: "EventfulBlock"
+    windowed_class: "EventfulTokenwiseBlock"

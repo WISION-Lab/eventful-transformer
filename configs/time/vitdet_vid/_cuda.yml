@@ -1,0 +1,8 @@
+device: "cuda"
+model:
+  backbone_config:
+    block_config:
+      matmul_2_cast: "float16"
+    windowed_overrides:
+      matmul_2_cast: null
+n_items: 5

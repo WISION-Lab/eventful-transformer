@@ -1,2 +1,7 @@
 # Sorted in ascending order
 .DS_Store
+.idea
+__pycache__
+inputs
+outputs
+weights

@@ -1,0 +1,6 @@
+device: "cuda"
+model:
+  spatial_config:
+    block_config:
+      matmul_2_cast: "float16"
+n_items: 100

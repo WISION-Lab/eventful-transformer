@@ -1,0 +1,5 @@
+_defaults:
+  - "_base.yml"
+  - "_temporal.yml"
+token_top_k: [100]
+weights: "weights/vivit_b_epic_kitchens.pth"

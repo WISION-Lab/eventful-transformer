@@ -1,0 +1,5 @@
+_defaults:
+  - "vitdet_b_coco.yml"
+model:
+  classes: 30
+  detectron2_config: "configs/detectron/vitdet_b_vid.py"

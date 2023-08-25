@@ -1,0 +1,5 @@
+_defaults:
+  - "_base.yml"
+  - "_temporal.yml"
+token_top_k: [24]
+weights: "weights/vivit_b_kinetics400_final_24.pth"

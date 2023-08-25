@@ -1,0 +1,16 @@
+_defaults:
+  - "configs/models/vivit_b_kinetics400.yml"
+_output: "results/train/vivit_kinetics400/${_name}/"
+epochs: 10
+model:
+  dropout_rate: 0.5
+  temporal_only: true
+optimizer: "AdamW"
+optimizer_kwargs:
+  lr: 2.0e-6
+  weight_decay: 0.05
+output_weights: "weights/vivit_b_kinetics400_${_name}.pth"
+starting_weights: "weights/vivit_b_kinetics400.pth"
+tensorboard: "tensorboard/${_name}"
+train_batch_size: 16
+val_batch_size: 16

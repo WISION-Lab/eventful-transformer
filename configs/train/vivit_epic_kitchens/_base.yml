@@ -1,0 +1,16 @@
+_defaults:
+  - "configs/models/vivit_b_epic_kitchens.yml"
+_output: "results/train/vivit_epic_kitchens/${_name}/"
+epochs: 5
+model:
+  dropout_rate: 0.5
+  temporal_only: true
+optimizer: "AdamW"
+optimizer_kwargs:
+  lr: 1.0e-5
+  weight_decay: 0.05
+output_weights: "weights/vivit_b_epic_kitchens_${_name}.pth"
+starting_weights: "weights/vivit_b_epic_kitchens.pth"
+tensorboard: "tensorboard/${_name}"
+train_batch_size: 8
+val_batch_size: 8

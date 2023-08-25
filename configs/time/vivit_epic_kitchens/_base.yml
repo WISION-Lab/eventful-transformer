@@ -1,0 +1,5 @@
+_defaults:
+  - "configs/models/vivit_b_epic_kitchens.yml"
+_output: "results/time/vivit_epic_kitchens/${_name}/"
+vanilla: false
+weights: "weights/vivit_b_epic_kitchens.pth"

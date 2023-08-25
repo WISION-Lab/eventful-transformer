@@ -1,0 +1,4 @@
+_defaults:
+  - "_size_672.yml"
+  - "_spatial.yml"
+vanilla: true

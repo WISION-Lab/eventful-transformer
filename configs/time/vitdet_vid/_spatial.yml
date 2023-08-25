@@ -1,0 +1,6 @@
+model:
+  backbone_config:
+    block_config:
+      pool_size: 2
+    windowed_overrides:
+      pool_size: null

@@ -1,0 +1,19 @@
+model:
+  classes: 80
+  detectron2_config: "configs/detectron/vitdet_b_coco.py"
+  input_shape: [3, 1024, 1024]
+  normalize_mean: [123.675, 116.28, 103.53]
+  normalize_std: [58.395, 57.12, 57.375]
+  output_channels: 256
+  patch_size: [16, 16]
+  scale_factors: [4.0, 2.0, 1.0, 0.5]
+  backbone_config:
+    depth: 12
+    position_encoding_size: [14, 14]
+    window_indices: [0, 1, 3, 4, 6, 7, 9, 10]
+    block_config:
+      dim: 768
+      relative_embedding_size: [64, 64]
+      heads: 12
+      mlp_ratio: 4
+      window_size: [14, 14]

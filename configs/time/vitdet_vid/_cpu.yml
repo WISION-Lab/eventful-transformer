@@ -1,0 +1,9 @@
+device: "cpu"
+model:
+  backbone_config:
+    block_config:
+      matmul_2_cast: "bfloat16"
+    windowed_overrides:
+      matmul_2_cast: null
+n_items: 1  # 242 frames
+threads: 8

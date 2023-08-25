@@ -1,0 +1,9 @@
+_defaults:
+  - "configs/models/vivit_b_epic_kitchens.yml"
+model:
+  spatial_config:
+    block_class: "EventfulBlock"
+    block_config:
+      matmul_2_cast: "float16"
+  spatial_only: true
+weights: "weights/vivit_b_epic_kitchens.pth"

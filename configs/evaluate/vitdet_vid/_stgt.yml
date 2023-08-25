@@ -1,0 +1,5 @@
+model:
+  backbone_config:
+    block_class: "EventfulTokenwiseBlock"
+    block_config:
+      stgt: true
