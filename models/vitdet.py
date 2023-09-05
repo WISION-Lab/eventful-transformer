@@ -15,7 +15,19 @@ from utils.image import as_float32, pad_to_size
 
 
 class LinearEmbedding(nn.Module):
+    """
+    The initial linear patch-embedding layer for ViTDet. Linearly
+    transforms each input patch into a token vector.
+    """
+
     def __init__(self, input_channels, dim, patch_size):
+        """
+        :param input_channels: The number of image channels (e.g., 3 for
+        RGB images)
+        :param dim: The dimensionality of token vectors
+        :param patch_size: The patch size for each token (a 2-element
+        tuple/list)
+        """
         super().__init__()
         self.conv = nn.Conv2d(
             in_channels=input_channels,
@@ -41,6 +53,12 @@ class LinearEmbedding(nn.Module):
 
 
 class PointwiseLayerNorm2d(nn.LayerNorm):
+    """
+    A LayerNorm operation which performs x.permute(0, 2, 3, 1) before
+    applying the normalization. The permutation is inverted after
+    normalization.
+    """
+
     def forward(self, x):
         # (batch, dim, height, width)
 
@@ -55,7 +73,18 @@ class PointwiseLayerNorm2d(nn.LayerNorm):
 
 
 class SimplePyramid(nn.Module):
+    """
+    The ViTDet feature pyramid (precedes the object detection head).
+    """
+
     def __init__(self, scale_factors, dim, out_channels):
+        """
+        :param scale_factors: A list of spatial scale factors
+        :param dim: The dimensionality of token vectors in the
+        Transformer backbone
+        :param out_channels: The number of output channels (the number
+        of channels expected by the object detection head)
+        """
         super().__init__()
         self.stages = nn.ModuleList(
             self._build_scale(scale, dim, out_channels) for scale in scale_factors
@@ -96,8 +125,12 @@ class SimplePyramid(nn.Module):
         return nn.Sequential(*start_layers, *common_layers)
 
 
-# See configs/models/vitdet_b_coco.yml for an example configuration.
 class ViTDet(ExtendedModule):
+    """
+    The ViTDet object detection Transformer model. See
+    configs/models/vitdet_b_coco.yml for an example configuration.
+    """
+
     def __init__(
         self,
         backbone_config,
@@ -110,6 +143,24 @@ class ViTDet(ExtendedModule):
         patch_size,
         scale_factors,
     ):
+        """
+        :param backbone_config: A dict containing kwargs for the
+        backbone constructor
+        :param classes: The number of object classes
+        :param detectron2_config: Path of a Python file containing a
+        Detectron2 config for the detection head
+        :param input_shape: The (c, h, w) shape for inputs (the
+        preprocessing spatially pads inputs to this shape)
+        :param normalize_mean: The mean to use with
+        torchvision.transforms.Normalize
+        :param normalize_std: The standard deviation to use with
+        torchvision.transforms.Normalize
+        :param output_channels: The number of channels expected by the
+        object detection head
+        :param patch_size: The patch size for each token (a 2-element
+        tuple/list)
+        :param scale_factors: Scale factors for the SimplePyramid module
+        """
         super().__init__()
         input_c, input_h, input_w = input_shape
         patch_size = numeric_tuple(patch_size, length=2)
@@ -122,7 +173,8 @@ class ViTDet(ExtendedModule):
         dim = backbone_config["block_config"]["dim"]
         self.embedding = LinearEmbedding(input_c, dim, patch_size)
         self.backbone = ViTBackbone(
-            input_size=self.backbone_input_size, **backbone_config,
+            input_size=self.backbone_input_size,
+            **backbone_config,
         )
         self.pyramid = SimplePyramid(scale_factors, dim, output_channels)
         detectron2_config = LazyConfig.load(detectron2_config)["model"]
@@ -138,6 +190,10 @@ class ViTDet(ExtendedModule):
         return results
 
     def post_backbone(self, images, x):
+        """
+        Computes the portion of the model after the Transformer
+        backbone.
+        """
         x = x.transpose(-1, -2)
         x = x.view(x.shape[:-1] + self.backbone_input_size)
         x = self.pyramid(x)
@@ -153,6 +209,10 @@ class ViTDet(ExtendedModule):
         return result
 
     def pre_backbone(self, x):
+        """
+        Computes the portion of the model before the Transformer
+        backbone.
+        """
         x = as_float32(x)  # Range [0, 1]
         x = self.preprocessing(x)
         images = ImageList.from_tensors([x])
@@ -161,7 +221,20 @@ class ViTDet(ExtendedModule):
 
 
 class ViTDetPreprocessing(nn.Module):
+    """
+    Preprocessing for ViTDet. Applies value normalization and square
+    padding. Expects inputs scaled to the range [0, 1].
+    """
+
     def __init__(self, input_shape, normalize_mean, normalize_std):
+        """
+        :param input_shape: The (c, h, w) shape to which inputs should
+        be padded
+        :param normalize_mean: The mean to use with
+        torchvision.transforms.Normalize
+        :param normalize_std: The standard deviation to use with
+        torchvision.transforms.Normalize
+        """
         super().__init__()
         self.input_shape = tuple(input_shape)
         self.normalization = Normalize(normalize_mean, normalize_std)

@@ -15,9 +15,13 @@ from utils.image import as_float32, resize_to_fit
 # https://github.com/alibaba-mmai-research/TAdaConv/blob/main/models/base/transformer.py
 
 
-# See configs/models/vivit_b_kinetics400.yml for an example
-# configuration.
 class FactorizedViViT(ExtendedModule):
+    """
+    The spatio-temporal factorized ViViT action recognition Transformer
+    model. See configs/models/vivit_b_kinetics400.yml for an example
+    configuration.
+    """
+
     def __init__(
         self,
         classes,
@@ -35,6 +39,32 @@ class FactorizedViViT(ExtendedModule):
         spatial_only=False,
         temporal_only=False,
     ):
+        """
+        :param classes: The number of output classes
+        :param input_shape: The (t, c, h, w) shape for each input view
+        (the preprocessing crops inputs to this shape)
+        :param normalize_mean: The mean to use with
+        torchvision.transforms.Normalize
+        :param normalize_std: The standard deviation to use with
+        torchvision.transforms.Normalize
+        :param spatial_config: A dict containing kwargs for the
+        spatial sub-model constructor
+        :param spatial_views: The number of spatial views of the video
+        :param temporal_config: A dict containing kwargs for the
+        temporal sub-model constructor
+        :param temporal_stride: The temporal stride at which input
+        frames should be sampled
+        :param temporal_views: The number of temporal views of the video
+        :param tubelet_shape: The (t, h, w) shape that should be mapped
+        to a token vector (the 3D analog of patch size)
+        :param batch_views: Whether the spatial and temporal views
+        should be arranged along the batch axis and processed in
+        parallel (this is more efficient, but doesn't always work)
+        :param dropout_rate: The dropout rate to use before the final
+        classification layer
+        :param spatial_only: Only apply the spatial sub-model
+        :param temporal_only: Only apply the temporal sub-model
+        """
         super().__init__()
         assert not (spatial_only and temporal_only)
         assert not (dropout_rate < 0.0 or dropout_rate > 1.0)
@@ -121,7 +151,20 @@ class FactorizedViViT(ExtendedModule):
 
 
 class TubeletEmbedding(nn.Module):
+    """
+    The initial linear tubelet-embedding layer for ViViT. Linearly
+    transforms each input tubelet (t, h, w) into a token vector.
+    """
+
     def __init__(self, input_channels, dim, tubelet_shape):
+        """
+
+        :param input_channels: The number of image channels (e.g., 3 for
+        RGB images)
+        :param dim: The dimensionality of token vectors
+        :param tubelet_shape: The tubelet size for each token (a
+        3-element t, h, w tuple/list)
+        """
         super().__init__()
         self.conv = nn.Conv3d(
             in_channels=input_channels,
@@ -150,15 +193,31 @@ class TubeletEmbedding(nn.Module):
 
 
 class ViViTPreprocessing(nn.Module):
+    """
+    Preprocessing for ViViT. Applies value normalization and chops the
+    video into multiple spatial and temporal views.
+    """
+
     def __init__(
         self,
         input_shape,
         normalize_mean,
         normalize_std,
+        spatial_views,
         temporal_stride,
         temporal_views,
-        spatial_views,
     ):
+        """
+        :param input_shape: The (t, c, h, w) shape for each input view
+        :param normalize_mean: The mean to use with
+        torchvision.transforms.Normalize
+        :param normalize_std: The standard deviation to use with
+        torchvision.transforms.Normalize
+        :param spatial_views: The number of spatial views of the video
+        :param temporal_stride: The temporal stride at which input
+        frames should be sampled
+        :param temporal_views: The number of spatial views of the video
+        """
         super().__init__()
         self.input_shape = input_shape
         self.temporal_stride = temporal_stride
@@ -211,7 +270,18 @@ class ViViTPreprocessing(nn.Module):
 
 
 class ViViTSubModel(ExtendedModule):
+    """
+    A factorized ViViT sub-model (spatial or temporal).
+    """
+
     def __init__(self, input_size, backbone_config):
+        """
+
+        :param input_size: The input size in tokens - (h, w) for the
+        spatial sub-model or (t,) for the temporal sub-model
+        :param backbone_config: A dict containing kwargs for the
+        backbone constructor
+        """
         super().__init__()
         dim = backbone_config["block_config"]["dim"]
         self.class_token = nn.Parameter(torch.zeros(1, 1, dim))

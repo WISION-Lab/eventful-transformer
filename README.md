@@ -1,3 +1,7 @@
+## Overview
+
+This is the PyTorch code for our ICCV 2023 paper "Eventful Transformers: Leveraging Temporal Redundancy in Vision Transformers." Please see our [paper webpage](https://wisionlab.com/project/eventful-transformers/) and the [arXiv paper](https://arxiv.org/abs/2308.13494).
+
 ## Disclaimer
 
 This is research-grade code, so it's possible you will encounter some hiccups. [Contact me](https://github.com/mattdutson/) if you encounter problems or if the documentation is unclear, and I will do my best to help.
@@ -30,7 +34,9 @@ Many scripts expect a `.yml` configuration file as a command-line argument. Thes
 
 ## Weights
 
-Weights for the ViViT action recognition model are available [here](https://github.com/alibaba-mmai-research/TAdaConv/blob/main/MODEL_ZOO.md). Weights for the ViTDet object detection model are available [here](https://github.com/facebookresearch/detectron2/tree/main/projects/ViTDet).
+Weights for the ViViT action recognition model (on Kinetics-400 and EPIC-Kitchens) are available [here](https://github.com/alibaba-mmai-research/TAdaConv/blob/main/MODEL_ZOO.md). We use the "ViViT Fact. Enc." weights.
+
+Weights for the ViTDet object detection model (on COCO) are available [here](https://github.com/facebookresearch/detectron2/tree/main/projects/ViTDet). We use the "Cascade Mask R-CNN, ViTDet, ViT-B" weights. Weights on ImageNet VID are available [here](https://drive.google.com/drive/folders/1tNtIOYlCIlzb2d_fCsIbmjgIETd-xzW-) (`frcnn_vitdet_final.pth`).
 
 The weight names need to be remapped to work with this codebase. To remap the ViViT weights, run:
 ```
