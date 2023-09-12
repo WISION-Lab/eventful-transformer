@@ -49,6 +49,18 @@ To remap the ViTDet weights, run:
 ./scripts/convert/vitdet.py <old_weights> <new_weights> ./configs/convert/vitdet_b.txt
 ```
 
+Some ViViT evaluation scripts assume a fine-tuned temporal sub-model. Fine-tuned weights can be downloaded [here](https://drive.google.com/drive/folders/1AP-NRhO4l_spEJ6ZXvfVO3PLlLOsXCmM?usp=sharing).
+
+Alternatively, you can run the fine-tuning yourself. To do this, run a `spatial` configuration (to cache the forward pass of the spatial sub-model), followed by a `train` configuration. For example:
+```
+./scripts/spatial/vivit_epic_kitchens.py ./configs/spatial/vivit_epic_kitchens/50.yml
+```
+then
+```
+./scripts/train/vivit_epic_kitchens.py ./configs/train/vivit_epic_kitchens/final_50.yml
+```
+This will produce `weights/vivit_b_epic_kitchens_final_50.pth`.
+
 ## Data
 
 The `datasets` folder defines PyTorch `Dataset` classes for Kinetics-400, VID, and EPIC-Kitchens.
@@ -69,6 +81,10 @@ Or in the Fish shell:
 ```
 set -ax PYTHONPATH .
 ```
+
+## ViViT Temporal Fine-Tuning
+
+
 
 ## Code Style
 
