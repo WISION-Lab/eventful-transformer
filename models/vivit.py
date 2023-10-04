@@ -81,9 +81,9 @@ class FactorizedViViT(ExtendedModule):
             input_shape,
             normalize_mean,
             normalize_std,
+            spatial_views,
             temporal_stride,
             temporal_views,
-            spatial_views,
         )
         dim = spatial_config["block_config"]["dim"]
         self.embedding = TubeletEmbedding(input_c, dim, tubelet_shape)
